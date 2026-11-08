@@ -15,6 +15,7 @@ Para acompanhar testes no navegador, execute `yarn test:e2e:visual`. Use
 locais. A versão sem janela é `yarn test:e2e:emulador`. Os testes capturam imagens das etapas
 previstas e uma imagem ao fim de cada teste; veja os anexos no relatório `playwright-report/index.html`.
 Não é uma gravação de cada clique. Em caso de falha, um trace também é salvo em `test-results/`.
+Para o teste com login emulado, instale também as dependências de apoio com `yarn --cwd admin install`.
 
 Para testar as regras do Firebase isoladamente, use `yarn test:firebase`. Para navegar pelos dados
 dos emuladores, execute `yarn firebase:emuladores` e acesse `http://127.0.0.1:4000`. A interface
