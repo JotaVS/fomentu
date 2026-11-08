@@ -19,13 +19,22 @@ Abra o endereço exibido no terminal e, na área administrativa, entre com o e-m
 fornecidos pelo instrutor. Leia a [constituição](.specify/memory/constitution.md) e os
 [rascunhos das funcionalidades](docs/features-draft.md).
 
+Antes do planejamento, consulte os ADRs da base:
+
+- [Acesso ao Firebase](docs/adr/001-acesso-firebase.md).
+- [Estratégia de testes](docs/adr/002-estrategia-de-testes.md).
+- [Organização das telas e componentes](docs/adr/003-organizacao-de-telas-e-componentes.md).
+
+Esses documentos registram decisões da base e uma orientação inicial para a organização do código.
+O grupo pode adaptá-la e deve registrar suas próprias decisões, incluindo a integração de IA.
+
 O cadastro de projetos será público. A consulta e as avaliações ficam na área administrativa. Os
 exemplos já disponíveis no banco são fictícios. Não compartilhe credenciais administrativas do Firebase.
 
 ## Etapas da atividade
 
 1. **Especificação:** defina o comportamento e os critérios de aceite.
-2. **Planejamento:** decida como implementar, organize as tarefas e registre uma decisão técnica em um ADR curto.
+2. **Planejamento:** considere os ADRs existentes, decida como implementar, organize as tarefas e registre uma decisão técnica em um ADR curto.
 3. **Implementação:** construa as funcionalidades e execute testes.
 4. **Code review:** revise, corrija e refatore o que for necessário.
 5. **Deploy:** peça ao instrutor para publicar a versão do grupo e verifique o fluxo no endereço publicado.
