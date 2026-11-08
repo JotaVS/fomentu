@@ -10,11 +10,9 @@ fornecida aos grupos; mantenha credenciais administrativas e segredos do provedo
 
 ## Grupos e dados
 
-```bash
-yarn grupo:criar group-01  # Cria ou prepara conta, dados e site
-yarn grupo:seed group-01   # Acrescenta apenas exemplos ausentes
-yarn grupo:apagar group-01 # Pede confirmação antes de excluir
-```
+- Criar ou preparar conta, dados e site: `yarn grupo:criar group-01`.
+- Acrescentar apenas exemplos ausentes: `yarn grupo:seed group-01`.
+- Apagar o grupo, após confirmação: `yarn grupo:apagar group-01`.
 
 Substitua `group-01` pelo grupo desejado, de `group-01` a `group-99`. A conta padrão segue o formato
 `grupo01@fomentu.com` e a senha de demonstração é `participante`. Todas as contas usam uma senha
