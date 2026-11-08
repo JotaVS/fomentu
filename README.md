@@ -39,6 +39,9 @@ exemplos já disponíveis no banco são fictícios. Não compartilhe credenciais
 4. **Code review:** revise, corrija e refatore o que for necessário.
 5. **Deploy:** peça ao instrutor para publicar a versão do grupo e verifique o fluxo no endereço publicado.
 
+Na etapa de revisão, use o [roteiro de code review](docs/revisao-de-codigo.md). Ele explica como
+guardar a referência inicial e traz um prompt que pode ser usado com Codex ou Claude Code.
+
 ## Verificações
 
 Em outro terminal, copie e execute o bloco abaixo para verificar a aplicação e acompanhar o teste
