@@ -36,7 +36,8 @@ Esta especificação descreve a infraestrutura pronta, sem resolver o exercício
   login e entrada na página autenticada, com o grupo correto. Testes de negócio ficam para os grupos.
 - O projeto deve oferecer comandos Yarn reais para desenvolvimento, testes e verificações finais.
 - A documentação de uso deve ser curta: README com configuração, execução e testes; este documento
-  para a base; um arquivo com os rascunhos. Não produzir guias extensos ou ADRs sem necessidade.
+  para a base; um arquivo com os rascunhos. No planejamento, os participantes registram um ADR curto
+  para uma decisão técnica relevante. Não produzir guias extensos sem necessidade.
 
 ## Configuração e decisões confirmadas
 
@@ -85,13 +86,13 @@ usuário sem claim e usuário sem autenticação. Lint, tipos e build passaram.
 
 Ainda faltam: implementar a chamada real ao provedor; configurar modelo e segredo; verificar o modo
 simulado em execução; provisionar e verificar as contas e os dados dos demais grupos;
-preparar os demais sites; testar seed e restauração; testar login real ou emulado com
-Playwright; verificar o Spec Kit e uma cópia limpa. Os testes do Playwright atuais verificam somente
-o formulário, não o login completo. Não se considera a oficina pronta até concluir essas etapas.
+preparar os demais sites; testar seed e restauração; verificar o login real no navegador com
+Playwright; verificar o Spec Kit e uma cópia limpa. O login emulado já foi testado com Playwright.
+Não se considera a oficina pronta até concluir essas etapas.
 
 Em 2026-11-08, o grupo 01 foi criado no Firebase real com 13 projetos fictícios, quatro avaliações
 de exemplo, dois registros técnicos do seed e um registro técnico anterior de diagnóstico, conta
-`grupo01@example.com` e site `fomentu-15f33-g01`. As regras foram publicadas. O login por SDK web,
+`grupo01@fomentu.com` e site `fomentu-15f33-g01`. As regras foram publicadas. O login por SDK web,
 a claim do grupo, leitura dos exemplos, escrita e releitura de diagnóstico e negação de acesso ao
 grupo 02 foram verificados. Os demais grupos e a função de IA real ainda estão pendentes.
 

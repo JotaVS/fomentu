@@ -20,7 +20,7 @@ test('entra no grupo e verifica o banco no emulador', async ({ page }, info) => 
   test.skip(process.env.FIREBASE_AUTH_EMULATOR_HOST !== '127.0.0.1:9099', 'Execute yarn test:e2e:emulador.');
   execFileSync('node', ['admin/emulator-test-setup.js'], { stdio: 'pipe', env: process.env });
   await page.goto('/admin');
-  await page.getByLabel('E-mail').fill('grupo01@example.com');
+  await page.getByLabel('E-mail').fill('grupo01@fomentu.com');
   await page.getByLabel('Senha').fill('participante');
   await page.getByRole('button', { name: 'Entrar', exact: true }).click();
   await expect(page.getByRole('heading', { name: /Olá, grupo 01/ })).toBeVisible();

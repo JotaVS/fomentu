@@ -54,7 +54,7 @@ if (action === 'create') {
   if (extraArgument) throw Error('Informe apenas o identificador do grupo.');
   const suffix = argument.slice(-2);
   const prefix = `grupo${suffix}`;
-  const email = `${prefix}@example.com`;
+  const email = `${prefix}@fomentu.com`;
   const password = 'participante';
   let user;
   try {
@@ -64,8 +64,10 @@ if (action === 'create') {
   } catch (error) {
     if (error.code !== 'auth/user-not-found') throw error;
     let previous;
-    try { previous = await auth.getUserByEmail(`participante-grupo${suffix}@example.com`); }
-    catch (lookupError) { if (lookupError.code !== 'auth/user-not-found') throw lookupError; }
+    for (const previousEmail of [`grupo${suffix}@example.com`, `participante-grupo${suffix}@example.com`]) {
+      try { previous = await auth.getUserByEmail(previousEmail); break; }
+      catch (lookupError) { if (lookupError.code !== 'auth/user-not-found') throw lookupError; }
+    }
     if (previous) {
       if (previous.customClaims?.groupId !== argument) throw Error('A conta anterior não está vinculada ao grupo solicitado.');
       user = await auth.updateUser(previous.uid, { email, password, disabled: false, emailVerified: false });

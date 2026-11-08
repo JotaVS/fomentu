@@ -25,12 +25,12 @@ Firebase CLI; o Playwright exige o navegador instalado com `yarn playwright inst
 A administração usa o Firebase CLI autenticado e requer acesso administrativo ao projeto. Instale as
 dependências com `yarn install` e `yarn --cwd admin install`. Para criar uma área, conta, exemplos e
 site de hospedagem, use `yarn grupo:criar group-01` (ou outro grupo de `group-01` a `group-99`).
-O e-mail padrão da conta administrativa segue o formato `grupo01@example.com`; a senha é
+O e-mail padrão da conta administrativa segue o formato `grupo01@fomentu.com`; a senha é
 `participante`. Existe uma conta administrativa por grupo, com acesso aos dados do próprio grupo.
 Proponentes acessam a entrada pública sem conta ou login.
 Essa senha previsível é exclusiva para a oficina com dados fictícios. O comando de criação não
-publica o frontend no site; para o grupo 01, use `yarn build` e
-`firebase deploy --only hosting:group-01 --project fomentu-15f33`.
+publica o frontend no site; o instrutor realiza os deploys. Para o grupo 01, o instrutor usa
+`yarn build` e `firebase deploy --only hosting:group-01 --project fomentu-15f33`.
 
 Cada grupo recebe 13 projetos fictícios, quatro avaliações de exemplo e dois registros técnicos no
 seed. Para acrescentar apenas exemplos ausentes a um grupo existente, execute `yarn grupo:seed group-01`.
