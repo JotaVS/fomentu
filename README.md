@@ -6,7 +6,12 @@ avaliações humanas e de IA. Cada grupo trabalha em sua própria cópia e área
 ## Começar
 
 Copie `.env.example` para `.env.local` e preencha a configuração pública do Firebase fornecida pelo
-instrutor. Depois, copie e execute o bloco abaixo na raiz do projeto:
+instrutor. Defina também `VITE_GROUP_ID=01`, trocando `01` pelo identificador do seu grupo
+(por exemplo, `ninja`). Use de 1 a 15 letras minúsculas, números ou hífens, sem hífen nas pontas.
+Reinicie o servidor após alterar a configuração. Esse identificador é público e indica o destino do
+cadastro; o acesso administrativo continua dependendo da conta autenticada.
+
+Depois, copie e execute o bloco abaixo na raiz do projeto:
 
 ```bash
 yarn install && \
@@ -25,8 +30,8 @@ Antes do planejamento, consulte os ADRs da base:
 - [Estratégia de testes](docs/adr/002-estrategia-de-testes.md).
 - [Organização das telas e componentes](docs/adr/003-organizacao-de-telas-e-componentes.md).
 
-Esses documentos registram decisões da base e uma orientação inicial para a organização do código.
-O grupo pode adaptá-la e deve registrar suas próprias decisões, incluindo a integração de IA.
+Esses documentos registram decisões da base, incluindo a organização do código por área. O grupo
+deve registrar suas próprias decisões, incluindo a integração de IA.
 
 O cadastro de projetos será público. A consulta e as avaliações ficam na área administrativa. Os
 exemplos já disponíveis no banco são fictícios. Não compartilhe credenciais administrativas do Firebase.

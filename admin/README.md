@@ -1,6 +1,9 @@
 # Preparação e administração da oficina
 
 Estas instruções são para o gestor do projeto Firebase. Os participantes usam o README principal.
+Esta pasta `admin/` contém scripts do gestor para criar grupos, preparar dados e publicar sites;
+ela não é a interface administrativa da aplicação. O frontend fica em `src/`, incluindo a área
+administrativa em `src/admin/`. O backend da aplicação fica em `functions/`.
 
 ## Preparar o ambiente
 
@@ -10,12 +13,16 @@ fornecida aos grupos; mantenha credenciais administrativas e segredos do provedo
 
 ## Grupos e dados
 
-- Criar ou preparar conta, dados e site: `yarn grupo:criar group-01`.
-- Acrescentar apenas exemplos ausentes: `yarn grupo:seed group-01`.
-- Apagar o grupo, após confirmação: `yarn grupo:apagar group-01`.
+- Criar ou preparar conta, dados e site: `yarn grupo:criar ninja`.
+- Acrescentar apenas exemplos ausentes: `yarn grupo:seed ninja`.
+- Apagar o grupo, após confirmação: `yarn grupo:apagar ninja`.
+- Apagar todos os grupos encontrados, após confirmação: `yarn grupos:apagar`.
 
-Substitua `group-01` pelo grupo desejado, de `group-01` a `group-99`. A conta padrão segue o formato
-`grupo01@fomentu.com` e a senha de demonstração é `participante`. Todas as contas usam uma senha
+O identificador não precisa ser numérico: pode ser, por exemplo, `01`, `aa` ou `ninja`.
+Use de 1 a 15 caracteres, com letras minúsculas, números e hífens; comece e termine
+com letra ou número. `01` e `1` são grupos diferentes. O grupo existente continua sendo `01`.
+O identificador interno recebe o prefixo `group-`. A conta segue o formato
+`grupo-ninja@fomentu.com` e a senha é o trecho antes do `@`: `grupo-ninja`. Todas as contas usam uma senha
 previsível: use apenas dados fictícios e considere que qualquer pessoa com essas credenciais pode
 entrar no grupo. Ao repetir a criação, a senha da conta padrão é redefinida; os dados existentes não
 são sobrescritos.
@@ -24,18 +31,20 @@ O seed cria 13 projetos fictícios, quatro avaliações e dois registros técnic
 criados pelo diagnóstico permanecem no banco. A exclusão confirmada remove permanentemente o site,
 os usuários com a claim do grupo, os dados e subcoleções e os registros de uso de IA. Ela não remove
 o projeto Firebase compartilhado nem o código local.
+O comando para todos lista os grupos encontrados em dados, contas, uso de IA e sites com o padrão
+de nomes da oficina. Após conferir a lista, responda `S` para confirmar ou `N` para cancelar.
 
 ## Deploy e verificação
 
-O gestor realiza as publicações. Para o grupo 01:
+O gestor realiza as publicações. Por exemplo, para o grupo `ninja`:
 
 ```bash
-yarn build
-firebase deploy --only hosting:group-01 --project fomentu-15f33
+yarn grupo:deploy ninja
 ```
 
-A criação do grupo prepara o site, mas não publica o frontend. Outros grupos precisam de destinos
-Hosting configurados antes do deploy. Para inspecionar dados dos emuladores, execute
+O comando gera o build com o identificador do grupo e publica apenas seu site. A criação do grupo
+prepara o site, mas não publica o frontend. O identificador é público e não autoriza acesso aos dados.
+Para inspecionar dados dos emuladores, execute
 `yarn firebase:emuladores` e acesse `http://127.0.0.1:4000`. Para testar as Security Rules no
 emulador, execute `yarn test:firebase`; o comando `yarn test` sozinho não inicia o emulador.
 
