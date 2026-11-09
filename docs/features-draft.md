@@ -3,12 +3,12 @@
 Cada grupo especificará e implementará as quatro funcionalidades. Os rascunhos não definem campos,
 telas, prompts, validações nem critérios de aceite. Esses detalhes serão decididos pelos participantes.
 
-| ID | Funcionalidade | Rascunho | Estado |
-| --- | --- | --- | --- |
-| F01 | Cadastrar projeto | Permitir que o proponente cadastre uma ideia publicamente, informando nome e e-mail; cada site recebe projetos para seu próprio grupo. | Pronto para especificar |
-| F02 | Consultar projetos | Listar os projetos do grupo e consultar seus detalhes. | Pronto para especificar |
-| F03 | Avaliar com IA | Gerar, exibir, salvar e consultar uma análise de IA sobre um projeto. | Pronto para especificar |
-| F04 | Avaliar como humano | Registrar, salvar e consultar um parecer humano sobre um projeto. | Pronto para especificar |
+Utilizar o edital do CRITT como modelos de submissão e análise de projetos: https://www2.ufjf.br/critt/wp-content/uploads/sites/121/2025/12/Edital-retificado.pdf
+
+- F01 — Cadastrar projeto: Permitir que o proponente cadastre uma ideia publicamente, informando nome e e-mail; cada site recebe projetos para seu próprio grupo.
+- F02 — Consultar projetos: Listar os projetos do grupo e consultar seus detalhes.
+- F03 — Avaliar com IA: Gerar, exibir, salvar e consultar uma análise de IA sobre um projeto.
+- F04 — Avaliar como humano: Registrar, salvar e consultar um parecer humano sobre um projeto.
 
 Consulta e avaliações dependem de projetos existentes; os exemplos do seed permitirão começar por
 qualquer uma dessas funcionalidades. O fluxo final deve usar também um projeto criado pelo aplicativo.
