@@ -1,8 +1,59 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /groups/{groupId}/{document=**} {
-      allow read, write: if request.auth != null && request.auth.token.groupId == groupId;
+    // Regras explícitas por coleção (ADR 005). Não há curinga: o que não está liberado aqui é negado.
+    match /groups/{groupId} {
+      // Membro do grupo: login e claim groupId igual ao grupo do caminho.
+      function isMember() {
+        return request.auth != null && request.auth.token.groupId == groupId;
+      }
+
+      function isText(value, min, max) {
+        return value is string && value.size() >= min && value.size() <= max;
+      }
+
+      // Projeto enviado pelo cadastro público (specs/002-cadastrar-projeto/data-model.md).
+      function validPublicProject(data) {
+        let required = ['title', 'description', 'problem', 'proponentName', 'proponentEmail',
+          'proponentProfile', 'partecArea', 'stage', 'mvpStatus', 'consentAt', 'createdAt', 'createdBy'];
+        return data.keys().hasAll(required)
+          && data.keys().hasOnly(required.concat(['mvpLink']))
+          && isText(data.title, 3, 100) && data.title.trim() == data.title
+          && isText(data.description, 30, 1000)
+          && isText(data.problem, 30, 1000)
+          && isText(data.proponentName, 3, 120)
+          && isText(data.proponentEmail, 3, 254)
+          && data.proponentEmail.matches('^[a-z0-9._%+-]+@[a-z0-9-]+(\\.[a-z0-9-]+)+$')
+          && data.proponentProfile in ['student', 'ufjf-staff', 'faculty', 'general-public', 'company']
+          && data.partecArea in ['health', 'logistics', 'it', 'creative-economy', 'agrifood', 'energy', 'none']
+          && data.stage in ['ideation', 'prototyping', 'mvp-validation', 'operation', 'traction', 'scale']
+          && data.mvpStatus in ['yes', 'no', 'validating']
+          && (data.mvpStatus != 'yes' || 'mvpLink' in data)
+          && (!('mvpLink' in data) || (isText(data.mvpLink, 1, 500) && data.mvpLink.matches('^https?://.+$')))
+          && data.createdBy == 'public-form'
+          && data.createdAt == request.time
+          && data.consentAt == request.time;
+      }
+
+      allow read: if isMember();
+
+      // Página de diagnóstico da base.
+      match /diagnostics/{diagnosticId} {
+        allow read, write: if isMember();
+      }
+
+      match /projects/{projectId} {
+        allow read: if isMember();
+        // Com ou sem login: o cadastro público só cria, nunca lê nem altera.
+        allow create: if validPublicProject(request.resource.data);
+        allow update, delete: if false;
+
+        // Escrita liberada pelas F03 (análise de IA) e F04 (parecer humano).
+        match /evaluations/{evaluationId} {
+          allow read: if isMember();
+          allow write: if false;
+        }
+      }
     }
   }
 }

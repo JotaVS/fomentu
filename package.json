@@ -14,8 +14,8 @@
     "grupo:apagar": "node admin/run.js delete fomentu-15f33",
     "test:firebase": "firebase emulators:exec --only firestore --project demo-fomentu 'yarn test'",
     "test:e2e:visual": "PW_SLOWMO=500 playwright test --headed",
-    "test:e2e:emulador": "firebase emulators:exec --only auth,firestore --project demo-fomentu 'VITE_USE_EMULATORS=true VITE_FIREBASE_PROJECT_ID=demo-fomentu yarn test:e2e'",
-    "test:e2e:emulador:visual": "firebase emulators:exec --only auth,firestore --project demo-fomentu 'VITE_USE_EMULATORS=true VITE_FIREBASE_PROJECT_ID=demo-fomentu yarn test:e2e:visual'",
+    "test:e2e:emulador": "firebase emulators:exec --only auth,firestore --project demo-fomentu 'VITE_USE_EMULATORS=true VITE_FIREBASE_PROJECT_ID=demo-fomentu VITE_GROUP_ID=group-01 yarn test:e2e'",
+    "test:e2e:emulador:visual": "firebase emulators:exec --only auth,firestore --project demo-fomentu 'VITE_USE_EMULATORS=true VITE_FIREBASE_PROJECT_ID=demo-fomentu VITE_GROUP_ID=group-01 yarn test:e2e:visual'",
     "firebase:emuladores": "firebase emulators:start --only auth,firestore,ui --project demo-fomentu",
     "grupo:seed": "node admin/run.js seed-group fomentu-15f33"
   },

@@ -12,10 +12,15 @@ if (import.meta.env.VITE_USE_EMULATORS === 'true') {
   connectFirestoreEmulator(db, '127.0.0.1', 8080);
   connectFunctionsEmulator(functions, '127.0.0.1', 5001);
 }
+const GROUP_ID_PATTERN = /^group-(0[1-9]|[1-9][0-9])$/;
 export async function groupFor(user: User): Promise<string> {
   const group = (await user.getIdTokenResult()).claims.groupId;
-  if (typeof group !== 'string' || !/^group-(0[1-9]|[1-9][0-9])$/.test(group)) throw new Error('Sua conta não possui um grupo válido. Procure o instrutor.');
+  if (typeof group !== 'string' || !GROUP_ID_PATTERN.test(group)) throw new Error('Sua conta não possui um grupo válido. Procure o instrutor.');
   return group;
+}
+/** Grupo que recebe os projetos do cadastro público deste site (VITE_GROUP_ID); null se ausente ou inválido. */
+export function publicGroupId(value: string | undefined = import.meta.env.VITE_GROUP_ID): string | null {
+  return value && GROUP_ID_PATTERN.test(value) ? value : null;
 }
 export const groupRef = (group: string) => doc(db, 'groups', group);
 export const projectsRef = (group: string) => collection(groupRef(group), 'projects');
