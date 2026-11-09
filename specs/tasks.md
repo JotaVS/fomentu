@@ -5,11 +5,17 @@ description: "Tarefas de implementação das funcionalidades F01 a F04"
 # Tarefas: miniapp Fomentu (F01–F04)
 
 **Entrada**: especificações e planos em `specs/002-cadastrar-projeto/`, `specs/003-consultar-projetos/`,
-`specs/004-avaliar-com-ia/` e `specs/005-avaliar-como-humano/`; ADRs 001 a 005 em `docs/adr/`.
+`specs/004-avaliar-com-ia/` e `specs/005-avaliar-como-humano/`; ADRs 001 a 006 em `docs/adr/`.
 
 **Organização**: três tarefas por funcionalidade, 12 no total. Cada tarefa é uma fatia completa:
 **testes → implementação → verificação**. Os subitens (T001–T092) guardam o detalhe com caminhos
 de arquivo.
+
+**Atualização da base (2026-11-09)**: a main passou a organizar o frontend por área (`src/public/`,
+`src/admin/`, `src/auth/`; ADR 003), adotou o Mantine (ADR 004) e mudou o grupo do site para um nome
+(`VITE_GROUP_ID=01` → `group-01`). O ADR de falhas da IA foi renumerado para 006. A F01 foi movida para
+`src/public/submission/`. Os caminhos `src/features/...` das F02 a F04 ainda precisam ser revistos para
+a área `src/admin/` antes da implementação.
 
 **Testes primeiro** (ADR 002): dentro de cada tarefa, escrever os testes, executá-los e confirmar
 que falham pelo motivo esperado antes de implementar. Alterar um teste revisado só com revisão do
@@ -51,9 +57,9 @@ Preparação:
 
 - [x] T001 Criar a referência local `git branch base-oficina` antes de qualquer alteração, conforme `docs/revisao-de-codigo.md`
 - [x] T002 [P] Adicionar `VITE_GROUP_ID=` com comentário em PT-BR em `.env.example`
-- [x] T003 [P] Incluir `VITE_GROUP_ID=group-01` nos scripts `test:e2e:emulador` e `test:e2e:emulador:visual` de `package.json`
+- [x] T003 [P] Incluir `VITE_GROUP_ID=01` (nome do grupo; antes da main de 2026-11-09, `group-01`) nos scripts `test:e2e:emulador` e `test:e2e:emulador:visual` de `package.json`
 - [x] T004 Verificar se `node admin/manage.js seed-group demo-fomentu group-01` funciona com `FIRESTORE_EMULATOR_HOST` definido e sem credenciais; registrar o resultado em `specs/003-consultar-projetos/research.md`
-- [x] T005 Estender `admin/emulator-test-setup.js` para criar `grupo02@fomentu.com` (claim `group-02`) e `grupo03@fomentu.com` (claim `group-03`, sem projetos) e os exemplos do seed em `group-01` e `group-02`, usando o seed do admin ou criação direta, conforme T004
+- [x] T005 Estender `admin/emulator-test-setup.js` para criar `grupo-02@fomentu.com` (claim `group-02`) e `grupo-03@fomentu.com` (claim `group-03`, sem projetos) e os exemplos do seed em `group-01` e `group-02`, usando o seed do admin ou criação direta, conforme T004
 
 Testes:
 
@@ -77,17 +83,17 @@ Testes:
 
 - [x] T006 [P] Testar rótulos PT-BR de todas as opções, "Não informado" para ausente, valor desconhecido exibido como recebido, data no formato brasileiro (America/Sao_Paulo) e "Data não informada" em `tests/unit/format.test.ts`
 - [x] T021 [P] [F01-US1] Testar `toProjectDoc` (trim, e-mail em minúsculas, `mvpLink` omitido quando vazio, `title`/`description`, `createdBy: 'public-form'`) em `tests/unit/project-form.test.ts`
-- [x] T022 [P] [F01-US1] Testar `publicGroupId` com valor válido, vazio e inválido em `tests/unit/public-group.test.ts`
+- [x] T022 [P] [F01-US1] Testar `publicGroupId` com valor válido, vazio e inválido em `tests/unit/public-group.test.ts` — substituído pelo `tests/group.test.ts` da main, que testa `groupIdFromName` no novo formato de nome do grupo
 - [x] T023 [P] [F01-US1] Testar no navegador: envio válido sem login → mensagem de sucesso e formulário limpo; botão indisponível durante o envio; projeto presente em `groups/group-01/projects` (consulta REST ao emulador com `Authorization: Bearer owner`), em `tests/e2e/submission.spec.ts`
 
 Implementação:
 
 - [x] T009 [P] Criar mapas de valores e rótulos de perfil, área PARTEC-JF, estágio e MVP em `src/shared/options.ts` (data-model da F01)
 - [x] T010 [P] Criar `formatDate`, `labelOrMissing` e constantes de texto em `src/shared/format.ts`
-- [x] T024 [F01-US1] Extrair a expressão regular do grupo e criar `publicGroupId()` (lê `VITE_GROUP_ID`) em `src/lib/firebase.ts`
-- [x] T025 [F01-US1] Criar tipos do formulário e `toProjectDoc` em `src/features/submission/projectForm.ts`
-- [x] T026 [F01-US1] Criar `submitProject` com `addDoc` e `serverTimestamp()` em `createdAt` e `consentAt` em `src/features/submission/submitProject.ts`
-- [x] T027 [F01-US1] Criar o formulário com os 12 campos, estados de envio, sucesso, erro genérico (mantendo os dados) e site sem grupo em `src/features/submission/SubmissionPage.tsx`
+- [x] T024 [F01-US1] Extrair a expressão regular do grupo e criar `publicGroupId()` (lê `VITE_GROUP_ID`) em `src/lib/firebase.ts` — a main passou a fornecer `publicGroupId()` com `src/lib/group.ts`, e a F01 usa essa versão
+- [x] T025 [F01-US1] Criar tipos do formulário e `toProjectDoc` em `src/public/submission/projectForm.ts`
+- [x] T026 [F01-US1] Criar `submitProject` com `addDoc` e `serverTimestamp()` em `createdAt` e `consentAt` em `src/public/submission/submitProject.ts`
+- [x] T027 [F01-US1] Criar o formulário com os 12 campos, estados de envio, sucesso, erro genérico (mantendo os dados) e site sem grupo em `src/public/submission/SubmissionPage.tsx`
 - [x] T028 [F01-US1] Renderizar `SubmissionPage` em `/cadastro` e remover o texto provisório em `src/main.tsx`
 
 ### [x] F01.3 — Validação e mensagens
@@ -102,9 +108,9 @@ Testes:
 
 Implementação:
 
-- [x] T031 [F01-US2] Implementar `validateProjectForm` em `src/features/submission/projectForm.ts`
+- [x] T031 [F01-US2] Implementar `validateProjectForm` em `src/public/submission/projectForm.ts`
 - [x] T032 [P] [F01-US2] Criar o contador de caracteres reutilizável em `src/shared/CharCounter.tsx`
-- [x] T033 [F01-US2] Exibir as mensagens por campo (`aria-describedby`), os contadores e o bloqueio de envio em `src/features/submission/SubmissionPage.tsx`
+- [x] T033 [F01-US2] Exibir as mensagens por campo (`aria-describedby`), os contadores e o bloqueio de envio em `src/public/submission/SubmissionPage.tsx`
 
 **Verificação (2026-11-09)**: lint, typecheck, `yarn test` com o emulador do Firestore (60 testes) e os testes de navegador com os emuladores (6) passaram. Caso de borda manual conferido no navegador: com `VITE_GROUP_ID` vazio e com valor inválido (`joao`), `/cadastro` mostra a mensagem de site não configurado e não exibe o formulário. No Windows, os scripts `test:firebase` e `test:e2e:emulador*` falham por causa das aspas simples; os testes foram executados com o comando equivalente usando aspas duplas.
 
@@ -174,14 +180,14 @@ Implementação:
 ### [ ] F03.1 — Pedido e resposta da IA
 
 **Objetivo**: funções puras para montar o pedido, validar a resposta e classificar falhas (F03-US1 e
-F03-US2, ADR 004), sem tela.
+F03-US2, ADR 006), sem tela.
 **Pronta quando**: `tests/unit/ai-*.test.ts` verdes. Pode começar logo depois da F01.2.
 
 Testes:
 
 - [ ] T048 [P] [F03-US1] Testar `buildPrompt`: todos os campos, "Não informado" nos ausentes, sem nome e e-mail do proponente, delimitadores, remoção dos delimitadores do texto do proponente, rejeição acima de 4.000 caracteres e `PROMPT_VERSION`, em `tests/unit/ai-prompt.test.ts`
 - [ ] T049 [P] [F03-US1] Testar `parseAnalysis`: JSON válido, um único bloco ```` ```json ````, texto extra, chave faltando ou extra, tipo errado, listas vazias ou com mais de 5 itens e item longo, em `tests/unit/ai-parse.test.ts`
-- [ ] T061 [P] [F03-US2] Testar `classifyAiError` para cada linha da tabela do ADR 004 (mensagem, nova tentativa permitida ou não, aviso de cota) em `tests/unit/ai-errors.test.ts`
+- [ ] T061 [P] [F03-US2] Testar `classifyAiError` para cada linha da tabela do ADR 006 (mensagem, nova tentativa permitida ou não, aviso de cota) em `tests/unit/ai-errors.test.ts`
 
 Implementação:
 
@@ -212,7 +218,7 @@ Implementação:
 
 ### [ ] F03.3 — Falhas, demora e histórico
 
-**Objetivo**: tratar falhas e demora conforme o ADR 004 e consultar as análises salvas (F03-US2 e F03-US3).
+**Objetivo**: tratar falhas e demora conforme o ADR 006 e consultar as análises salvas (F03-US2 e F03-US3).
 **Pronta quando**: `yarn test:firebase && yarn test:e2e:emulador` verdes, verificação manual no modo
 simulado feita (`specs/004-avaliar-com-ia/quickstart.md`) e verificação real registrada ou marcada
 como pendente.

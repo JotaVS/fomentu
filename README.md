@@ -6,7 +6,12 @@ avaliações humanas e de IA. Cada grupo trabalha em sua própria cópia e área
 ## Começar
 
 Copie `.env.example` para `.env.local` e preencha a configuração pública do Firebase fornecida pelo
-instrutor. Depois, copie e execute o bloco abaixo na raiz do projeto:
+instrutor. Defina também `VITE_GROUP_ID=01`, trocando `01` pelo identificador do seu grupo
+(por exemplo, `ninja`). Use de 1 a 15 letras minúsculas, números ou hífens, sem hífen nas pontas.
+Reinicie o servidor após alterar a configuração. Esse identificador é público e indica o destino do
+cadastro; o acesso administrativo continua dependendo da conta autenticada.
+
+Depois, copie e execute o bloco abaixo na raiz do projeto:
 
 ```bash
 yarn install && \
@@ -24,9 +29,13 @@ Antes do planejamento, consulte os ADRs da base:
 - [Acesso ao Firebase](docs/adr/001-acesso-firebase.md).
 - [Estratégia de testes](docs/adr/002-estrategia-de-testes.md).
 - [Organização das telas e componentes](docs/adr/003-organizacao-de-telas-e-componentes.md).
+- [Interface com Mantine](docs/adr/004-interface-mantine.md).
 
-Esses documentos registram decisões da base e uma orientação inicial para a organização do código.
-O grupo pode adaptá-la e deve registrar suas próprias decisões, incluindo a integração de IA.
+Esses documentos registram decisões da base, incluindo a organização do código por área. O grupo
+deve registrar suas próprias decisões, incluindo a integração de IA.
+
+Use os componentes Mantine ao criar interfaces. O login em `src/auth/LoginPage.tsx` mostra como
+usar campo e botão; o tema compartilhado fica em `src/shared/theme.ts`.
 
 O cadastro de projetos será público. A consulta e as avaliações ficam na área administrativa. Os
 exemplos já disponíveis no banco são fictícios. Não compartilhe credenciais administrativas do Firebase.
@@ -45,7 +54,7 @@ guardar a referência inicial e traz um prompt que pode ser usado com Codex ou C
 ## Verificações
 
 Em outro terminal, copie e execute o bloco abaixo para verificar a aplicação e acompanhar o teste
-no navegador. Os emuladores exigem Java e Firebase CLI instalados.
+no navegador. Os emuladores exigem Java; o Firebase CLI é instalado pelo `yarn install`.
 
 ```bash
 yarn lint && \
@@ -60,4 +69,9 @@ salvam capturas das etapas previstas e do fim de cada teste no relatório
 `playwright-report/index.html`. Não há captura de cada clique. Em caso de falha, há um trace em
 `test-results/`.
 
-A integração real de IA e o mecanismo de envio público ainda dependem de preparação pelo instrutor.
+Testes de componentes podem ficar em `tests/**/*.test.tsx`, usando Vitest e React Testing Library.
+Para usar o ambiente de navegador simulado, inclua `// @vitest-environment jsdom` no início do teste.
+
+A aplicação chama uma Cloud Function do Firebase para acessar a IA; a integração real com OpenAI/GPT,
+o modelo e a chave ainda precisam ser configurados pelo instrutor. O modo atual é simulado. O envio
+público também depende de preparação pelo instrutor.

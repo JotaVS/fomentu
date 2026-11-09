@@ -5,7 +5,7 @@
 - **Entrada**: `{ prompt: string }`, não vazio, com até 4.000 caracteres.
 - **Saída**: `{ text: string, mode: 'live' | 'mock', model?: string }`.
 - **Erros** (`FunctionsError.code`) e tratamento: tabela do
-  [ADR 004](../../../docs/adr/004-tratamento-de-falhas-da-ia.md).
+  [ADR 006](../../../docs/adr/006-tratamento-de-falhas-da-ia.md).
 
 ## Estrutura do pedido (`buildPrompt`)
 

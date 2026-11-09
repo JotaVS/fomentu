@@ -171,7 +171,7 @@ do seed) e conferir ordem, identificação e conteúdo.
 - **FR-008**: Cada falha do serviço (permissão, limite diário, integração não configurada, pedido
   inválido, tempo esgotado ou rede) DEVE gerar mensagem própria em português; o sistema NUNCA
   DEVE substituir uma falha por uma resposta simulada. A classificação das falhas e o tratamento
-  de cada uma seguem o ADR 004 (`docs/adr/004-tratamento-de-falhas-da-ia.md`).
+  de cada uma seguem o ADR 006 (`docs/adr/006-tratamento-de-falhas-da-ia.md`).
 - **FR-008a**: O sistema NÃO DEVE repetir chamadas automaticamente; "Tentar novamente" DEVE ser
   oferecido apenas para falhas temporárias, e falhas NÃO DEVEM ser gravadas no banco.
 - **FR-008b**: O sistema DEVE avisar após 10 segundos de espera e encerrar a espera aos 35
@@ -226,7 +226,7 @@ do seed) e conferir ordem, identificação e conteúdo.
   rastreabilidade).
 - **Tratamento de falhas, demora e custo** (decisão do grupo em 2026-11-09): retentativa somente
   manual, aviso aos 10 s e tempo-limite de 35 s no cliente, confirmação antes de gerar de novo e
-  falhas não gravadas. Detalhes e alternativas em `docs/adr/004-tratamento-de-falhas-da-ia.md`.
+  falhas não gravadas. Detalhes e alternativas em `docs/adr/006-tratamento-de-falhas-da-ia.md`.
 - **Resposta simulada aceita como texto simples**: a simulação atual do serviço devolve um texto
   fixo sem critérios. Exigir estrutura nesse modo bloquearia o fluxo sem o provedor real.
 

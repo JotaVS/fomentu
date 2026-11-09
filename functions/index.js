@@ -5,7 +5,7 @@ initializeApp();
 const db = getFirestore();
 export const generateText = onCall({ region: 'us-central1', timeoutSeconds: 30 }, async request => {
   const group = request.auth?.token.groupId;
-  if (!request.auth || typeof group !== 'string' || !/^group-(0[1-9]|[1-9][0-9])$/.test(group)) throw new HttpsError('permission-denied', 'Usuário sem grupo autorizado.');
+  if (!request.auth || typeof group !== 'string' || !/^group-[a-z0-9](?:[a-z0-9-]{0,13}[a-z0-9])?$/.test(group)) throw new HttpsError('permission-denied', 'Usuário sem grupo autorizado.');
   const prompt = request.data?.prompt;
   if (typeof prompt !== 'string' || !prompt.trim() || prompt.length > 4000) throw new HttpsError('invalid-argument', 'Informe um texto de até 4000 caracteres.');
   const day = new Date().toISOString().slice(0, 10);

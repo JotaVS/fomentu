@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { emptyProjectForm, toProjectDoc, validateProjectForm, type ProjectFormValues } from '../../src/features/submission/projectForm';
+import { emptyProjectForm, toProjectDoc, validateProjectForm, type ProjectFormValues } from '../../src/public/submission/projectForm';
 
 function filledForm(): ProjectFormValues {
   return {

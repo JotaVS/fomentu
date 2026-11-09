@@ -1,4 +1,4 @@
-# ADR 004 — Tratamento de falhas da IA
+# ADR 006 — Tratamento de falhas da IA
 
 **Estado:** aceito pelo grupo em 2026-11-09.
 

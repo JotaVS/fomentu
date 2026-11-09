@@ -32,6 +32,6 @@ aplicação, não depender somente do seed.
 - A base já contém testes de isolamento e de entrada no navegador; eles não cobrem as quatro
   funcionalidades que os participantes construirão.
 - Os comandos existentes, capturas e requisitos dos emuladores estão no README principal.
-- Atualmente o Vitest descobre `tests/**/*.test.ts`. A configuração ainda não está preparada para
-  descobrir `.test.tsx`, e não há biblioteca de testes de componentes instalada.
+- O Vitest descobre testes `.test.ts` e `.test.tsx` em `tests/`; a base inclui React Testing Library
+  e `jsdom` para testes de componentes.
 - O serviço real de IA ainda não foi configurado. Testar uma simulação não comprova a integração real.

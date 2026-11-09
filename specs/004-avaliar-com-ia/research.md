@@ -14,7 +14,7 @@
 
 - **Decisão**: constante `PROMPT_VERSION = 'ai-analysis-v1'` gravada em cada análise. Ela muda
   sempre que as instruções mudarem.
-- **Motivo**: rastreabilidade (FR-009) e base da confirmação antes de gerar de novo (ADR 004).
+- **Motivo**: rastreabilidade (FR-009) e base da confirmação antes de gerar de novo (ADR 006).
 
 ## 3. Proteção contra injeção no pedido
 
@@ -33,7 +33,7 @@
 ## 5. Tempo-limite e aviso
 
 - **Decisão**: `httpsCallable(functions, 'generateText', { timeout: 35_000 })` e aviso aos 10 s
-  (ADR 004).
+  (ADR 006).
 - **Observação**: a alteração em `src/lib/firebase.ts` é pequena e só afeta a chamada do cliente; a
   função do servidor não muda.
 
@@ -42,7 +42,7 @@
 - **Decisão**: `page.route('**/generateText', ...)` responde no formato do protocolo de funções
   chamáveis: sucesso `{"result": {...}}` e erro `{"error": {"status": "...", "message": "..."}}` com
   o status HTTP correspondente. O relógio é controlado com `page.clock`.
-- **Motivo**: é determinístico, cobre todas as falhas do ADR 004 e não exige o emulador de
+- **Motivo**: é determinístico, cobre todas as falhas do ADR 006 e não exige o emulador de
   Functions nem mudança de scripts (decisão do grupo em 2026-11-09).
 - **Alternativas descartadas**: emulador de Functions (só cobre o texto fixo simulado) e fake
   dentro do app (código de teste no produto).

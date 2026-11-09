@@ -12,29 +12,43 @@
     "test:e2e": "playwright test",
     "grupo:criar": "node admin/run.js create fomentu-15f33",
     "grupo:apagar": "node admin/run.js delete fomentu-15f33",
+    "grupos:apagar": "node admin/run.js delete-all fomentu-15f33",
+    "grupo:deploy": "node admin/deploy.js",
     "test:firebase": "firebase emulators:exec --only firestore --project demo-fomentu 'yarn test'",
     "test:e2e:visual": "PW_SLOWMO=500 playwright test --headed",
-    "test:e2e:emulador": "firebase emulators:exec --only auth,firestore --project demo-fomentu 'VITE_USE_EMULATORS=true VITE_FIREBASE_PROJECT_ID=demo-fomentu VITE_GROUP_ID=group-01 yarn test:e2e'",
-    "test:e2e:emulador:visual": "firebase emulators:exec --only auth,firestore --project demo-fomentu 'VITE_USE_EMULATORS=true VITE_FIREBASE_PROJECT_ID=demo-fomentu VITE_GROUP_ID=group-01 yarn test:e2e:visual'",
+    "test:e2e:emulador": "firebase emulators:exec --only auth,firestore --project demo-fomentu 'VITE_USE_EMULATORS=true VITE_FIREBASE_PROJECT_ID=demo-fomentu VITE_GROUP_ID=01 yarn test:e2e'",
+    "test:e2e:emulador:visual": "firebase emulators:exec --only auth,firestore --project demo-fomentu 'VITE_USE_EMULATORS=true VITE_FIREBASE_PROJECT_ID=demo-fomentu VITE_GROUP_ID=01 yarn test:e2e:visual'",
     "firebase:emuladores": "firebase emulators:start --only auth,firestore,ui --project demo-fomentu",
     "grupo:seed": "node admin/run.js seed-group fomentu-15f33"
   },
   "dependencies": {
+    "@mantine/core": "^8",
+    "@mantine/hooks": "^8",
     "firebase": "11.10.0",
     "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "react-dom": "19.1.0",
+    "react-router": "^7"
   },
   "devDependencies": {
     "@eslint/js": "9.30.0",
+    "@firebase/rules-unit-testing": "4.0.1",
     "@playwright/test": "1.53.1",
+    "@testing-library/dom": "^10.4.2",
+    "@testing-library/jest-dom": "^7.0.1",
+    "@testing-library/react": "^16.3.3",
+    "@testing-library/user-event": "^14.6.8",
     "@types/react": "19.1.8",
     "@types/react-dom": "19.1.6",
     "@vitejs/plugin-react": "4.6.0",
     "eslint": "9.30.0",
+    "firebase-tools": "^15.35.0",
+    "jsdom": "^31.0.0",
+    "postcss": "^8.5.32",
+    "postcss-preset-mantine": "^1.18.0",
+    "postcss-simple-vars": "^7.0.1",
     "typescript": "5.8.3",
     "typescript-eslint": "8.35.0",
     "vite": "6.3.5",
-    "vitest": "3.2.4",
-    "@firebase/rules-unit-testing": "4.0.1"
+    "vitest": "3.2.4"
   }
 }

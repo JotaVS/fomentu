@@ -5,15 +5,16 @@ import { readFile } from 'node:fs/promises';
 import { createInterface } from 'node:readline/promises';
 import { stdin, stdout } from 'node:process';
 import { execFileSync } from 'node:child_process';
-const [action, project, argument, extraArgument] = process.argv.slice(2);
+import { groupFromArgument, validGroup } from './group-id.js';
+const [action, project, rawArgument, extraArgument] = process.argv.slice(2);
+const argument = ['create', 'delete', 'seed-group', 'reset'].includes(action) ? groupFromArgument(rawArgument) : rawArgument;
 if (project !== 'fomentu-15f33' && !/^demo-[a-z0-9-]+$/.test(project || '')) throw Error('Informe explicitamente um projeto autorizado.');
 initializeApp({ credential: applicationDefault(), projectId: project });
 const db = getFirestore();
 const auth = getAuth();
-const validGroup = group => /^group-(0[1-9]|[1-9][0-9])$/.test(group || '');
 function hostingSite(group, create) {
   if (project.startsWith('demo-')) return;
-  const site = `${project}-g${group.slice(-2)}`;
+  const site = `${project}-g${group.slice(6)}`;
   const response = JSON.parse(execFileSync('firebase', ['hosting:sites:list', '--project', project, '--json'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }));
   const exists = response.result.sites.some(item => item.name.endsWith(`/sites/${site}`));
   if (create && !exists) execFileSync('firebase', ['hosting:sites:create', site, '--project', project], { stdio: 'inherit' });
@@ -49,13 +50,49 @@ async function seed(group) {
   await createIfMissing(root.collection('diagnostics').doc('seed-001'), { description: 'Exemplo técnico de preparação', createdAt: FieldValue.serverTimestamp() });
   await createIfMissing(root.collection('diagnostics').doc('seed-002'), { description: 'Exemplo técnico de verificação', createdAt: FieldValue.serverTimestamp() });
 }
+async function groupIds() {
+  const groups = new Set((await db.collection('groups').listDocuments()).map(ref => ref.id).filter(validGroup));
+  for (const ref of await db.collection('aiUsage').listDocuments()) {
+    const group = ref.id.replace(/-\d{4}-\d{2}-\d{2}$/, '');
+    if (group !== ref.id && validGroup(group)) groups.add(group);
+  }
+  let pageToken;
+  do {
+    const page = await auth.listUsers(1000, pageToken);
+    for (const user of page.users) if (validGroup(user.customClaims?.groupId)) groups.add(user.customClaims.groupId);
+    pageToken = page.pageToken;
+  } while (pageToken);
+  if (!project.startsWith('demo-')) {
+    const response = JSON.parse(execFileSync('firebase', ['hosting:sites:list', '--project', project, '--json'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }));
+    const prefix = `${project}-g`;
+    for (const site of response.result.sites) {
+      const name = site.name.split('/').pop();
+      const group = `group-${name?.slice(prefix.length)}`;
+      if (name?.startsWith(prefix) && validGroup(group)) groups.add(group);
+    }
+  }
+  return [...groups].sort();
+}
+async function deleteGroup(group) {
+  await db.recursiveDelete(db.doc(`groups/${group}`));
+  for (const usage of await db.collection('aiUsage').listDocuments()) {
+    if (usage.id.startsWith(`${group}-`) && /^\d{4}-\d{2}-\d{2}$/.test(usage.id.slice(group.length + 1))) await db.recursiveDelete(usage);
+  }
+  let pageToken;
+  do {
+    const page = await auth.listUsers(1000, pageToken);
+    for (const user of page.users) if (user.customClaims?.groupId === group) await auth.deleteUser(user.uid);
+    pageToken = page.pageToken;
+  } while (pageToken);
+  hostingSite(group, false);
+  console.log(`Dados, usuários e site de ${group} excluídos.`);
+}
 if (action === 'create') {
-  if (!validGroup(argument)) throw Error('Use um grupo de group-01 a group-99.');
   if (extraArgument) throw Error('Informe apenas o identificador do grupo.');
-  const suffix = argument.slice(-2);
-  const prefix = `grupo${suffix}`;
+  const suffix = argument.slice(6);
+  const prefix = `grupo-${suffix}`;
   const email = `${prefix}@fomentu.com`;
-  const password = 'participante';
+  const password = prefix;
   let user;
   try {
     user = await auth.getUserByEmail(email);
@@ -64,7 +101,7 @@ if (action === 'create') {
   } catch (error) {
     if (error.code !== 'auth/user-not-found') throw error;
     let previous;
-    for (const previousEmail of [`grupo${suffix}@example.com`, `participante-grupo${suffix}@example.com`]) {
+    for (const previousEmail of [`grupo${suffix}@fomentu.com`, `grupo${suffix}@example.com`, `participante-grupo${suffix}@example.com`]) {
       try { previous = await auth.getUserByEmail(previousEmail); break; }
       catch (lookupError) { if (lookupError.code !== 'auth/user-not-found') throw lookupError; }
     }
@@ -78,29 +115,27 @@ if (action === 'create') {
   await auth.setCustomUserClaims(user.uid, { ...user.customClaims, groupId: argument });
   await seed(argument);
   hostingSite(argument, true);
-  console.log(`Grupo ${argument} preparado; conta ${email}.`);
+  console.log(`Grupo ${argument} preparado.\nE-mail: ${email}\nSenha: ${password}`);
 } else if (action === 'delete') {
-  if (!validGroup(argument)) throw Error('Use um grupo de group-01 a group-99.');
   const input = createInterface({ input: stdin, output: stdout });
-  const answer = await input.question(`Excluir permanentemente site, dados, avaliações, uso de IA e usuários de ${argument} no projeto ${project}? Digite ${argument} para confirmar: `);
+  const answer = await input.question(`Excluir permanentemente site, dados, avaliações, uso de IA e usuários de ${argument} no projeto ${project}? [S/N] `);
   input.close();
-  if (answer !== argument) {
+  if (answer.trim().toLowerCase() !== 's') {
     console.log('Exclusão cancelada.');
     process.exit(0);
   }
-  await db.recursiveDelete(db.doc(`groups/${argument}`));
-  const usages = await db.collection('aiUsage').listDocuments();
-  for (const usage of usages) if (usage.id.startsWith(`${argument}-`)) await db.recursiveDelete(usage);
-  let pageToken;
-  do {
-    const page = await auth.listUsers(1000, pageToken);
-    for (const user of page.users) if (user.customClaims?.groupId === argument) await auth.deleteUser(user.uid);
-    pageToken = page.pageToken;
-  } while (pageToken);
-  hostingSite(argument, false);
-  console.log(`Dados, usuários e site de ${argument} excluídos.`);
+  await deleteGroup(argument);
+} else if (action === 'delete-all') {
+  if (rawArgument || extraArgument) throw Error('Este comando não recebe argumentos.');
+  const groups = await groupIds();
+  if (!groups.length) { console.log('Nenhum grupo encontrado.'); process.exit(0); }
+  console.log(`Grupos encontrados: ${groups.join(', ')}`);
+  const input = createInterface({ input: stdin, output: stdout });
+  const answer = await input.question(`Excluir permanentemente os dados, usuários e sites listados do projeto ${project}? [S/N] `);
+  input.close();
+  if (answer.trim().toLowerCase() !== 's') { console.log('Exclusão cancelada.'); process.exit(0); }
+  for (const group of groups) await deleteGroup(group);
 } else if (action === 'seed-group') {
-  if (!validGroup(argument)) throw Error('Use um grupo de group-01 a group-99.');
   await seed(argument);
   console.log(`Exemplos ausentes criados para ${argument}.`);
 } else if (action === 'seed') {
@@ -120,4 +155,4 @@ if (action === 'create') {
   console.log(`Restaurando ${argument} no projeto ${project}.`);
   await db.recursiveDelete(db.doc(`groups/${argument}`));
   await seed(argument);
-} else throw Error('Use create, delete, seed-group, seed, accounts ou reset.');
+} else throw Error('Use create, delete, delete-all, seed-group, seed, accounts ou reset.');

@@ -3,7 +3,7 @@
 **Branch**: `004-avaliar-com-ia` | **Data**: 2026-11-09 | **Spec**: [spec.md](spec.md)
 
 **Entrada**: especificação em `specs/004-avaliar-com-ia/spec.md` e
-[ADR 004](../../docs/adr/004-tratamento-de-falhas-da-ia.md).
+[ADR 006](../../docs/adr/006-tratamento-de-falhas-da-ia.md).
 
 ## Resumo
 
@@ -11,7 +11,7 @@ Adicionar ao detalhe do projeto (F02) uma seção de análise de IA. O app monta
 com os dados do projeto delimitados como dados, chama a função existente `generateText` e valida
 a resposta real como **JSON** com resumo e cinco critérios. A prévia é exibida com selo de modo e
 aviso fixo, e o registro em `evaluations` só é criado quando o avaliador escolhe salvar. Falhas,
-demora e confirmação seguem o ADR 004. A função de IA da base **não é alterada**.
+demora e confirmação seguem o ADR 006. A função de IA da base **não é alterada**.
 
 ## Contexto técnico
 
@@ -45,7 +45,7 @@ antes do provedor; nenhuma chave de IA no frontend; falha nunca vira resposta si
 | --- | --- |
 | I. Escopo pequeno | ✅ Análise qualitativa, sem nota nem decisão. |
 | II. Persistência | ✅ Análises em `evaluations` com `source: 'ai'`, separadas dos pareceres. |
-| III. IA identificável e controlada | ✅ Usa o backend autenticado do instrutor; modo real ou simulado exibido e gravado; falhas tratadas pelo ADR 004, sem conversão para resposta simulada. |
+| III. IA identificável e controlada | ✅ Usa o backend autenticado do instrutor; modo real ou simulado exibido e gravado; falhas tratadas pelo ADR 006, sem conversão para resposta simulada. |
 | IV. Isolamento | ✅ Gravação na subcoleção do projeto do grupo; regra exige membro e autor igual ao usuário. |
 | V. Simplicidade e verificação | ✅ Simulação determinística nos testes; a integração real é verificada à parte e registrada como pendência enquanto não estiver configurada. |
 
@@ -74,7 +74,7 @@ src/
 └── features/ai-analysis/
     ├── prompt.ts                       # PROMPT_VERSION, buildPrompt(project) e verificação de 4.000 caracteres
     ├── parseAnalysis.ts                # extrai e valida o JSON (puro)
-    ├── aiErrors.ts                     # classifyAiError(): mensagem PT-BR e se permite nova tentativa (ADR 004)
+    ├── aiErrors.ts                     # classifyAiError(): mensagem PT-BR e se permite nova tentativa (ADR 006)
     ├── saveAnalysis.ts                 # addDoc em evaluations
     └── AiAnalysisSection.tsx           # botão, espera (aviso aos 10 s), prévia, salvar/descartar, histórico
 
@@ -108,7 +108,7 @@ tests/
      proponente; rejeita pedido acima de 4.000 caracteres.
    - `parseAnalysis`: aceita o JSON válido, inclusive envolvido em um único bloco ```` ```json ````;
      rejeita texto extra, chave faltando, tipo errado e listas vazias ou longas demais.
-   - `classifyAiError`: cobre cada linha da tabela do ADR 004.
+   - `classifyAiError`: cobre cada linha da tabela do ADR 006.
 2. **Regras**: membro cria análise de IA válida; autor diferente do usuário, `source` inválida,
    chave extra, alteração ou exclusão são negados.
 3. **Navegador** (com `page.route`): resposta real válida → prévia por critério com selo "Análise
@@ -125,7 +125,7 @@ tests/
   poderia gravar um documento `source: 'ai'` à mão. Isso é aceito para a oficina e registrado no
   ADR 005. A garantia exigiria que a própria função gravasse a análise, o que está fora do escopo.
 - A integração real ainda está pendente na base.
-- Cota e tokens são gastos inclusive em falhas, por decisão da base (ADR 004).
+- Cota e tokens são gastos inclusive em falhas, por decisão da base (ADR 006).
 
 ## Acompanhamento de complexidade
 
