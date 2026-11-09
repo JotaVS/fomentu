@@ -28,6 +28,9 @@ test('entra no grupo e verifica o banco no emulador', async ({ page }, info) => 
   await page.getByRole('button', { name: 'Verificar conexão' }).click();
   await expect(page.getByRole('status')).toContainText('Conexão confirmada');
   await capture(page, info, '04-conexao');
+  await page.goto('/admin/projetos/exemplo');
+  await expect(page.getByRole('heading', { name: 'Detalhes do projeto' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'É aqui que as ideias ganham forma.' })).toBeVisible();
 });
 
 test('cria e acessa um grupo com nome livre', async ({ page }) => {

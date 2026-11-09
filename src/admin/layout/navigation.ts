@@ -7,3 +7,7 @@ export const navigation: { href: string; label: string; icon: IconName }[] = [
   { href: '/admin/parecer', label: 'Parecer humano', icon: 'message' },
 ];
 export const titles: Record<string, string> = { '/admin': 'Visão geral', '/admin/projetos': 'Projetos', '/admin/avaliacao-ia': 'Avaliação com IA', '/admin/parecer': 'Parecer humano' };
+
+export function isProjectDetail(path: string): boolean {
+  return /^\/admin\/projetos\/[^/]+$/.test(path);
+}

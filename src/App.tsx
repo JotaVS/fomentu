@@ -5,7 +5,7 @@ import { auth,groupFor,groupRef } from './lib/firebase';
 import { PublicPage } from './public/PublicPage';
 import { LoginPage } from './auth/LoginPage';
 import { AdminLayout } from './admin/layout/AdminLayout';
-import { titles } from './admin/layout/navigation';
+import { isProjectDetail, titles } from './admin/layout/navigation';
 import { Dashboard } from './admin/dashboard/Dashboard';
 import { FeaturePage } from './admin/FeaturePage';
 
@@ -36,7 +36,7 @@ export function App() {
   if(!admin) return <PublicPage path={path} />;
   if(loading) return <div className="loading">Carregando...</div>;
   if(!user) return <LoginPage email={email} password={password} message={message} setEmail={setEmail} setPassword={setPassword} login={login} />;
-  const currentTitle=titles[path]||'Visão geral';
+  const currentTitle=isProjectDetail(path) ? 'Detalhes do projeto' : titles[path]||'Visão geral';
   return <AdminLayout path={path} currentTitle={currentTitle} group={group} user={user} logout={() => void signOut(auth)}>
     {group? path==='/admin'? <Dashboard group={group} checking={checking} message={message} diagnose={() => void diagnose()} />:<FeaturePage path={path} currentTitle={currentTitle} />:<div className="empty-panel"><h2>Não foi possível identificar seu grupo.</h2><p>{message||'Procure o instrutor para verificar sua conta.'}</p></div>}
   </AdminLayout>;
