@@ -1,6 +1,7 @@
 import type { FormEvent } from 'react';
 import { Brand } from '../shared/Brand';
 import { Icon } from '../shared/Icon';
+import { Button, Input } from '@mantine/core';
 
 type Props={ email: string; password: string; message: string; setEmail: (value: string) => void; setPassword: (value: string) => void; login: (event: FormEvent) => void; };
 
@@ -32,11 +33,11 @@ export function LoginPage({ email,password,message,setEmail,setPassword,login }:
         <h2>Entrar na plataforma</h2>
         <p>Use os dados de acesso fornecidos pelo instrutor.</p>
         <form onSubmit={login}>
-          <label>E-mail<input type="email" autoComplete="username" placeholder="seuemail@exemplo.com" value={email} onChange={e => setEmail(e.target.value)} required />
+          <label>E-mail<Input type="email" autoComplete="username" placeholder="seuemail@exemplo.com" value={email} onChange={e => setEmail(e.target.value)} required />
           </label>
-          <label>Senha<input type="password" autoComplete="current-password" placeholder="Digite sua senha" value={password} onChange={e => setPassword(e.target.value)} required />
-          </label>{message&&<p role="status" className="form-error">{message}</p>}<button className="button primary login-submit">Entrar <Icon name="arrow" size={18} />
-          </button>
+          <label>Senha<Input type="password" autoComplete="current-password" placeholder="Digite sua senha" value={password} onChange={e => setPassword(e.target.value)} required />
+          </label>{message&&<p role="status" className="form-error">{message}</p>}<Button type="submit" className="button primary login-submit">Entrar <Icon name="arrow" size={18} />
+          </Button>
         </form>
         <div className="login-help">Problemas para acessar? <strong>Procure o instrutor.</strong>
         </div>

@@ -1,4 +1,5 @@
 import type { User } from 'firebase/auth';
+import { UnstyledButton } from '@mantine/core';
 import { Icon } from '../../shared/Icon';
 
 export function Header({ currentTitle,group,user,logout }: { currentTitle: string; group: string; user: User; logout: () => void; }) {
@@ -16,9 +17,9 @@ export function Header({ currentTitle,group,user,logout }: { currentTitle: strin
         <strong>Meu grupo</strong>
         <small>{user.email}</small>
       </div>
-      <button className="logout" onClick={logout} aria-label="Sair" title="Sair">
+      <UnstyledButton className="logout" onClick={logout} aria-label="Sair" title="Sair">
         <Icon name="logout" size={19} />
-      </button>
+      </UnstyledButton>
     </div>
   </header>;
 }

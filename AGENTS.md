@@ -10,6 +10,7 @@
   `specs/001-base-do-treinamento/spec.md`, `docs/features-draft.md` e os ADRs em `docs/adr/`.
 - Considere os ADRs existentes no planejamento. Os grupos podem registrar novas decisões, incluindo
   a de IA, e devem seguir a organização por área definida no ADR 003.
+- Use os componentes do Mantine nas interfaces, conforme o ADR 004, e mantenha o tema compartilhado.
 - Atualize o estado das tarefas da base apenas com evidências de implementação e verificação.
 - As quatro funcionalidades dos rascunhos são o exercício dos participantes; não as entregue prontas
   durante a preparação da base.

@@ -1,4 +1,5 @@
 import { Icon } from '../../shared/Icon';
+import { Button } from '@mantine/core';
 import { navigation } from '../layout/navigation';
 
 export function Dashboard({ group,checking,message,diagnose }: { group: string; checking: boolean; message: string; diagnose: () => void; }) {
@@ -12,8 +13,8 @@ export function Dashboard({ group,checking,message,diagnose }: { group: string; 
         </h1>
         <p>Um espaço para acompanhar ideias e construir novas possibilidades.</p>
       </div>
-      <a className="button secondary" href="/cadastro">Ver página pública <Icon name="external" size={16} />
-      </a>
+      <Button component="a" variant="outline" className="button secondary" href="/cadastro">Ver página pública <Icon name="external" size={16} />
+      </Button>
     </div>
     <section className="intro-panel">
       <div className="intro-copy">
@@ -62,7 +63,7 @@ export function Dashboard({ group,checking,message,diagnose }: { group: string; 
         <strong>Preparação do ambiente</strong>
         <p>Verifique a conexão com o banco antes de iniciar a oficina.</p>
       </div>
-      <button className="button outline" onClick={diagnose} disabled={checking}>{checking? 'Verificando...':'Verificar conexão'}</button>
+      <Button variant="outline" className="button outline" onClick={diagnose} disabled={checking}>{checking? 'Verificando...':'Verificar conexão'}</Button>
     </section>{message&&<p className="status-message" role="status">{message}</p>}
   </>;
 }

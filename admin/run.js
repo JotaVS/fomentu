@@ -1,4 +1,4 @@
-import { execFileSync, spawnSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import { mkdtempSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
@@ -11,9 +11,9 @@ let directory;
 try {
   const env = { ...process.env };
   if (!env.GOOGLE_APPLICATION_CREDENTIALS && !env.FIRESTORE_EMULATOR_HOST) {
-    const globalRoot = execFileSync('npm', ['root', '-g'], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
-    const cliAuth = require(path.join(globalRoot, 'firebase-tools/lib/auth.js'));
-    const cliApi = require(path.join(globalRoot, 'firebase-tools/lib/api.js'));
+    const cliRoot = path.join(directoryPath, '../node_modules/firebase-tools');
+    const cliAuth = require(path.join(cliRoot, 'lib/auth.js'));
+    const cliApi = require(path.join(cliRoot, 'lib/api.js'));
     const account = cliAuth.getGlobalDefaultAccount();
     if (!account?.tokens?.refresh_token) throw new Error('Entre no Firebase CLI com firebase login.');
     directory = mkdtempSync(path.join(tmpdir(), 'fomentu-admin-'));
