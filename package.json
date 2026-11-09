@@ -12,6 +12,8 @@
     "test:e2e": "playwright test",
     "grupo:criar": "node admin/run.js create fomentu-15f33",
     "grupo:apagar": "node admin/run.js delete fomentu-15f33",
+    "grupos:apagar": "node admin/run.js delete-all fomentu-15f33",
+    "grupo:deploy": "node admin/deploy.js",
     "test:firebase": "firebase emulators:exec --only firestore --project demo-fomentu 'yarn test'",
     "test:e2e:visual": "PW_SLOWMO=500 playwright test --headed",
     "test:e2e:emulador": "firebase emulators:exec --only auth,firestore --project demo-fomentu 'VITE_USE_EMULATORS=true VITE_FIREBASE_PROJECT_ID=demo-fomentu yarn test:e2e'",
