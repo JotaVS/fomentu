@@ -20,7 +20,7 @@
   implementar e as decisões técnicas no planejamento.
 - Não implemente o sistema durante a especificação ou o planejamento. A implementação ocorre na
   etapa própria, após o planejamento.
-- Não implemente testes de segurança das Security Rules do Firebase durante a oficina: os grupos
-  de estudantes compartilham o mesmo banco e esse esforço não é prioridade da atividade.
-- Na etapa de tarefas, gere no máximo quatro tarefas por funcionalidade. Para cada tarefa, preveja
+- Não implemente testes de segurança das Security Rules do Firebase: os grupos de estudantes
+  compartilham o mesmo banco e esse esforço não é prioridade da atividade.
+- Na etapa de tarefas, gere no máximo três tarefas por funcionalidade. Para cada tarefa, preveja
   no máximo dois testes de integração no navegador, selecionando os cenários mais relevantes.
